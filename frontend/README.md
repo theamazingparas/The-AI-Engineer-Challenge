@@ -73,6 +73,7 @@ frontend/
 │   └── components/
 │       ├── WelcomeCard.tsx   # "What is this?" intro + starter prompts
 │       ├── MessageBubble.tsx # One chat bubble (you vs. coach)
+│       ├── Markdown.tsx      # Pretty Markdown for coach replies
 │       ├── ChatInput.tsx     # Auto-growing textarea + Send button
 │       ├── TypingIndicator.tsx
 │       └── types.ts
@@ -84,6 +85,7 @@ frontend/
 
 - **Enter** sends, **Shift+Enter** adds a new line
 - The input box and chat bubbles grow to fit what you write
+- Coach replies render as **Markdown**: headings, lists, bold, tables, and code look the way they should
 - A "Coach is typing…" indicator while you wait
 - Readable error messages (bad API key, rate limit, backend down…)
 - Works in light and dark mode, on phones and desktops

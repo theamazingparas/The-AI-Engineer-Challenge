@@ -1,3 +1,4 @@
+import Markdown from "./Markdown";
 import type { ChatMessage } from "./types";
 
 /**
@@ -5,6 +6,8 @@ import type { ChatMessage } from "./types";
  * - User messages: right-aligned, indigo background with white text.
  * - Coach messages: left-aligned, white/slate background with dark text.
  * Bubbles size to their content (up to ~80% width) and wrap long words.
+ * Coach replies are rendered as Markdown (the model formats with headings,
+ * lists, and bold); user text stays plain so it shows exactly as typed.
  */
 export default function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
@@ -14,9 +17,9 @@ export default function MessageBubble({ message }: { message: ChatMessage }) {
       <div
         className={[
           "max-w-[80%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed shadow-sm",
-          "whitespace-pre-wrap break-words",
+          "break-words",
           isUser
-            ? "rounded-br-sm bg-indigo-600 text-white"
+            ? "whitespace-pre-wrap rounded-br-sm bg-indigo-600 text-white"
             : "rounded-bl-sm border border-slate-200 bg-white text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100",
         ].join(" ")}
       >
@@ -25,7 +28,7 @@ export default function MessageBubble({ message }: { message: ChatMessage }) {
             Coach
           </span>
         )}
-        {message.content}
+        {isUser ? message.content : <Markdown content={message.content} />}
       </div>
     </div>
   );
