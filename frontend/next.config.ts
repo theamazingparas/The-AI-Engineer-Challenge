@@ -22,7 +22,8 @@ const nextConfig: NextConfig = {
   /**
    * The UI always calls relative paths like `/api/chat`.
    * - Locally: we proxy those calls to the FastAPI dev server (no CORS needed).
-   * - On Vercel: `vercel.json` routes `/api/*` to `api/index.py`, so no rewrite is needed.
+   * - On Vercel: the root `vercel.json` defines two Services (this app + the FastAPI
+   *   backend) and rewrites `/api/*` to the backend, so no rewrite is needed here.
    */
   async rewrites() {
     if (process.env.NODE_ENV !== "development") return [];

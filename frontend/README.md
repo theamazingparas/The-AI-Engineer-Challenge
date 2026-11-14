@@ -48,7 +48,7 @@ Open **http://localhost:3000** and say hi! 👋
 The UI always calls **relative** URLs like `/api/chat` and `/api/health`. Where they end up depends on where the app is running:
 
 - **Locally (`npm run dev`)**: [`next.config.ts`](./next.config.ts) has a dev-only rewrite that proxies `/api/*` to `http://localhost:8000/api/*`. No CORS headaches.
-- **On Vercel**: the root [`vercel.json`](../vercel.json) routes `/api/*` to the Python function in `api/index.py`, and everything else to this Next.js app.
+- **On Vercel**: the root [`vercel.json`](../vercel.json) uses [Vercel Services](https://vercel.com/kb/guide/vercel-services) to run two apps in one project: `frontend` (this Next.js app) and `backend` (FastAPI from `api/index.py`). Its rewrites send `/api/*` to the backend, with the full path intact, and everything else to the frontend.
 
 Running the backend on a different host or port? Point the proxy at it:
 
@@ -113,6 +113,14 @@ vercel
 ```
 
 Then add your provider env vars (`LLM_PROVIDER`, `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`, and so on) in the Vercel project settings, and redeploy. 🎉
+
+Want to rehearse the real Vercel routing on your machine first? From the repo root (with any `npm run dev` stopped):
+
+```bash
+npx vercel dev --local   # starts both services behind Vercel's router
+```
+
+> 🧯 Saw `Cannot patch preview comments when immutable static file upload is enabled`? That came from the old `builds` config in `vercel.json`, which couldn't detect the Next.js version in `frontend/`. The Services config fixes it. Also check that **Framework Preset** is **Services** (or "Other") under Project Settings → Build and Deployment, and that **Root Directory** is the repo root.
 
 ---
 
